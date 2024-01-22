@@ -75,13 +75,13 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
       onSuccess: ({ gameId }: { gameId: string }) => {
         console.log(gameId)
         setFinishedLoading(true);
-        // setTimeout(() => {
-        //   if (form.getValues("type") === "mcq") {
-        //     router.push(`/play/mcq/${gameId}`);
-        //   } else if (form.getValues("type") === "open_ended") {
-        //     router.push(`/play/open-ended/${gameId}`);
-        //   }
-        // }, 2000);
+        setTimeout(() => {
+          if (form.getValues("type") === "mcq") {
+            router.push(`/play/mcq/${gameId}`);
+          } else if (form.getValues("type") === "open_ended") {
+            router.push(`/play/open-ended/${gameId}`);
+          }
+        }, 2000);
       },
     });
   };

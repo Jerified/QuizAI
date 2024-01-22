@@ -3,6 +3,7 @@ import openAI from "openai";
 const openai = new openAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+console.log(openai)
 // const openai = new OpenAI(configuration);
 
 interface OutputFormat {
