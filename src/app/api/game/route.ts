@@ -99,6 +99,7 @@ export async function POST(req: Request, res: Response) {
         }),
       });
     }
+    // console.log(gameId)
 
     return NextResponse.json({ gameId: game.id }, { status: 200 });
   } catch (error) {
@@ -132,6 +133,7 @@ export async function GET(req: Request, res: Response) {
     }
     const url = new URL(req.url);
     const gameId = url.searchParams.get("gameId");
+    console.log(gameId)
     if (!gameId) {
       return NextResponse.json(
         { error: "You must provide a game id." },
