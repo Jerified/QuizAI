@@ -18,6 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
 import { useToast } from "./ui/use-toast";
+import {FaQuestionCircle} from 'react-icons/fa'
 
 type Props = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
@@ -133,6 +134,12 @@ const MCQ = ({ game }: Props) => {
   }, [handleNext]);
 
   if (hasEnded) {
+//     <CardTitle className="mr-5 text-center divide-y divide-zinc-600/50">
+//     <div>{questionIndex + 1}</div>
+//     <div className="text-base text-slate-400">
+//       {game.questions.length}
+//     </div>
+//   </CardTitle>
     return (
       <div className="absolute flex flex-col justify-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
         <div className="px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
@@ -162,8 +169,8 @@ const MCQ = ({ game }: Props) => {
             </span>
           </p>
           <div className="flex self-start mt-3 text-slate-400">
-            <Timer className="mr-2" />
-            {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+            {/* <Timer className="mr-2" /> */}
+            
           </div>
         </div>
         <MCQCounter
@@ -171,14 +178,21 @@ const MCQ = ({ game }: Props) => {
           wrong_answers={stats.wrong_answers}
         />
       </div>
+      <div className='flex items-center justify-between'>
+        <div className="flex gap-1 text-xl items-center my-4 text-black font-semibold bg-white/70 py-2 px-3 rounded-sm w-fit">
+            <span className=""><FaQuestionCircle className='text-3xl text-black' /></span>
+            <div className="mr-5 text-center flex gap-1">
+            <div className='indent-2 text-white/60'><span className='text-black'>Question No.</span>{questionIndex + 1}</div>
+            <div className="">
+            <span className='indent-2'>of</span> {game.questions.length}
+            </div>
+        <div/>
+        </div>
+        </div>
+        <div className='text-xl '>{formatTimeDelta(differenceInSeconds(now, game.timeStarted))}</div>
+      </div>
       <Card className="w-full mt-4">
         <CardHeader className="flex flex-row items-center">
-          <CardTitle className="mr-5 text-center divide-y divide-zinc-600/50">
-            <div>{questionIndex + 1}</div>
-            <div className="text-base text-slate-400">
-              {game.questions.length}
-            </div>
-          </CardTitle>
           <CardDescription className="flex-grow text-lg">
             {currentQuestion?.question}
           </CardDescription>
@@ -186,6 +200,7 @@ const MCQ = ({ game }: Props) => {
       </Card>
       <div className="flex flex-col items-center justify-center w-full mt-4">
         {options.map((option, index) => {
+            // if (indent)
           return (
             <Button
               key={option}
@@ -195,7 +210,7 @@ const MCQ = ({ game }: Props) => {
             >
               <div className="flex items-center justify-start">
                 <div className="p-2 px-3 mr-5 border rounded-md">
-                  {index + 1}
+                  {String.fromCharCode(65 + index)}
                 </div>
                 <div className="text-start">{option}</div>
               </div>
