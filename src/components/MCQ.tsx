@@ -33,6 +33,8 @@ const MCQ = ({ game }: Props) => {
   });
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
   const [now, setNow] = React.useState(new Date());
+  const [answerStatus, setAnswerStatus] = React.useState(false)  
+  const [choiceStatus, setChoiceStatus] = React.useState<string>("default")
 
   const currentQuestion = React.useMemo(() => {
     return game.questions[questionIndex];
@@ -45,6 +47,7 @@ const MCQ = ({ game }: Props) => {
   }, [currentQuestion]);
 
   const { toast } = useToast();
+  //ts-ignore
   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
     mutationFn: async () => {
       const payload: z.infer<typeof checkAnswerSchema> = {
@@ -78,7 +81,11 @@ const MCQ = ({ game }: Props) => {
   const handleNext = React.useCallback(() => {
     checkAnswer(undefined, {
       onSuccess: ({ isCorrect }) => {
+        
+        console.log(isCorrect)
+       
         if (isCorrect) {
+            // setAnswerStatus(true)
           setStats((stats) => ({
             ...stats,
             correct_answers: stats.correct_answers + 1,
@@ -86,9 +93,10 @@ const MCQ = ({ game }: Props) => {
           toast({
             title: "Correct",
             description: "You got it right!",
-            variant: "success",
+            // variant: "success",
           });
         } else {
+        //  setAnswerStatus(isCorrect)
           setStats((stats) => ({
             ...stats,
             wrong_answers: stats.wrong_answers + 1,
@@ -99,12 +107,22 @@ const MCQ = ({ game }: Props) => {
             variant: "destructive",
           });
         }
+        
         if (questionIndex === game.questions.length - 1) {
           endGame();
           setHasEnded(true);
           return;
         }
-        setQuestionIndex((questionIndex) => questionIndex + 1);
+        setTimeout(() => {
+            setQuestionIndex((questionIndex) => questionIndex + 1);
+            // setAnswerStatus(true)
+        //      setAnswerStatus((answerStatus) => {
+        //   const newAnswerStatus = [...answerStatus];
+        //   newAnswerStatus[questionIndex] = isCorrect? "correct" : "wrong";
+        //   return newAnswerStatus;
+        // });
+            // setChoiceStatus("default");
+        }, 1000);
       },
     });
   }, [checkAnswer, questionIndex, game.questions.length, toast, endGame]);
@@ -132,14 +150,29 @@ const MCQ = ({ game }: Props) => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleNext]);
+   function formatTimeDelta(seconds: number) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds - hours * 3600) / 60);
+    const secs = Math.floor(seconds - hours * 3600 - minutes * 60);
+    const parts = [];
+    if (hours > 0) {
+      parts.push(`${hours.toString().padStart(2, '0')}`);
+    }
+    if (minutes > 0) {
+      parts.push(`${minutes.toString().padStart(2, '0')}`);
+    }
+    if (secs > 0) {
+      parts.push(`${secs.toString().padStart(2, '0')}`);
+    }
+    return <div className='bg-white/50 flex rounded-sm text-black font-medium'>{parts.map(part => (
+        <div className='flex items-center border-r px-3 py-2' key={part}>
+          <div className='text-xl mr-1 '>{part}</div>
+          {/* <Timer className='w-4 h-4' /> */}
+        </div>
+    ))}</div>
+  }
 
   if (hasEnded) {
-//     <CardTitle className="mr-5 text-center divide-y divide-zinc-600/50">
-//     <div>{questionIndex + 1}</div>
-//     <div className="text-base text-slate-400">
-//       {game.questions.length}
-//     </div>
-//   </CardTitle>
     return (
       <div className="absolute flex flex-col justify-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
         <div className="px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
@@ -158,20 +191,16 @@ const MCQ = ({ game }: Props) => {
   }
 
   return (
-    <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
-      <div className="flex flex-row justify-between">
+    <div className="md:w-[80vw] max-w-4xl w-[90vw] mx-auto">
+      <div className="fle justify-between items-center my-3">
         <div className="flex flex-col">
           {/* topic */}
-          <p>
+          <p className='flex items-center justify-center text-xl'>
             <span className="text-slate-400">Topic</span> &nbsp;
             <span className="px-2 py-1 text-white rounded-lg bg-slate-800">
               {game.topic}
             </span>
           </p>
-          <div className="flex self-start mt-3 text-slate-400">
-            {/* <Timer className="mr-2" /> */}
-            
-          </div>
         </div>
         <MCQCounter
           correct_answers={stats.correct_answers}
@@ -189,9 +218,9 @@ const MCQ = ({ game }: Props) => {
         <div/>
         </div>
         </div>
-        <div className='text-xl '>{formatTimeDelta(differenceInSeconds(now, game.timeStarted))}</div>
+        {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
       </div>
-      <Card className="w-full mt-4">
+      <Card className="w-full mt-2 md:mt-4 bg-white text-black md:h-[15vh]">
         <CardHeader className="flex flex-row items-center">
           <CardDescription className="flex-grow text-lg">
             {currentQuestion?.question}
@@ -205,14 +234,14 @@ const MCQ = ({ game }: Props) => {
             <Button
               key={option}
               variant={selectedChoice === index ? "default" : "outline"}
-              className="justify-start w-full py-8 mb-4"
+              className={`justify-start w-full py-8 mb-4  border-2 rounded-md `}
               onClick={() => setSelectedChoice(index)}
             >
               <div className="flex items-center justify-start">
-                <div className="p-2 px-3 mr-5 border rounded-md">
+                <div className="p-2 px-3 mr-3 border rounded-md">
                   {String.fromCharCode(65 + index)}
                 </div>
-                <div className="text-start">{option}</div>
+                <div className="text-start whitespace-pre-line">{option}</div>
               </div>
             </Button>
           );

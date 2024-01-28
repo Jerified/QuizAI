@@ -16,7 +16,7 @@ export default async function Home() {
     redirect("/dashboard");
   }
   return (
-    <div className="flex min-h-screen justify-center items-center flex-col  ">
+    <div className="flex min-h-screen justify-center items-center flex-col bg-[#f1d9d8] dark:bg-[#070616]  ">
         <div className="text-center my-[1rem] md:hidde">
             <h1 className="text-4xl font-bold  ">Sign up now</h1>
             <p className="text-sm pt-3 max-w-[70%] mx-auto">Quizard is a platform for creating quizzes using AI!. Get started by

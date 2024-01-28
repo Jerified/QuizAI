@@ -93,7 +93,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-      <Card>
+      <Card className="bg-[#f1d9d8] dark:bg-[#070616]">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Quiz Creation</CardTitle>
           <CardDescription>Choose a topic</CardDescription>

@@ -1,3 +1,4 @@
+import React from 'react'
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -20,4 +21,5 @@ export function formatTimeDelta(seconds: number) {
     parts.push(`${secs}s`);
   }
   return parts.join(" ");
+//   return `<div className='divide-y-2'>${parts.join(" ")}</div>`
 }

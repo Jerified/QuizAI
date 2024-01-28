@@ -25,7 +25,7 @@ const RecentActivityCard = async (props: Props) => {
     },
   });
   return (
-    <Card className="col-span-4 lg:col-span-3">
+    <Card className="col-span-4 lg:col-span-3 bg-[#f1d9d8]">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
           <Link href="/history">Recent Activity</Link>
@@ -35,7 +35,7 @@ const RecentActivityCard = async (props: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="max-h-[580px] overflow-scroll">
-        <HistoryComponent limit={10} userId={session.user.id} />
+        <HistoryComponent limit={5} userId={session.user.id} />
       </CardContent>
     </Card>
   );

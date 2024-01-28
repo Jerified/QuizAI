@@ -20,7 +20,7 @@ const HotTopicsCard = async (props: Props) => {
     };
   });
   return (
-    <Card className="col-span-4">
+    <Card className="col-span-4 bg-[#f1d9d8]">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Hot Topics</CardTitle>
         <CardDescription>
