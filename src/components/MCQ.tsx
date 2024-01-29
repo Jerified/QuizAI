@@ -33,7 +33,7 @@ const MCQ = ({ game }: Props) => {
   });
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
   const [now, setNow] = React.useState(new Date());
-  const [answerStatus, setAnswerStatus] = React.useState(false)  
+  const [answerStatus, setAnswerStatus] = React.useState(0)  
   const [choiceStatus, setChoiceStatus] = React.useState<string>("default")
 
   const currentQuestion = React.useMemo(() => {
@@ -48,7 +48,7 @@ const MCQ = ({ game }: Props) => {
 
   const { toast } = useToast();
   //ts-ignore
-  const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
+  const { mutate: checkAnswer, isPending: isChecking } = useMutation({
     mutationFn: async () => {
       const payload: z.infer<typeof checkAnswerSchema> = {
         questionId: currentQuestion.id,
@@ -113,7 +113,10 @@ const MCQ = ({ game }: Props) => {
           setHasEnded(true);
           return;
         }
-        setTimeout(() => {
+
+        console.log(game.questions[questionIndex + 1])
+        // setAnswerStatus(game.questions[questionIndex + 1])
+        // setTimeout(() => {
             setQuestionIndex((questionIndex) => questionIndex + 1);
             // setAnswerStatus(true)
         //      setAnswerStatus((answerStatus) => {
@@ -122,7 +125,7 @@ const MCQ = ({ game }: Props) => {
         //   return newAnswerStatus;
         // });
             // setChoiceStatus("default");
-        }, 1000);
+        // }, 1000);
       },
     });
   }, [checkAnswer, questionIndex, game.questions.length, toast, endGame]);
@@ -229,13 +232,14 @@ const MCQ = ({ game }: Props) => {
       </Card>
       <div className="flex flex-col items-center justify-center w-full mt-4">
         {options.map((option, index) => {
+            console.log(option)
             // if (indent)
           return (
             <Button
               key={option}
               variant={selectedChoice === index ? "default" : "outline"}
-              className={`justify-start w-full py-8 mb-4  border-2 rounded-md `}
-              onClick={() => setSelectedChoice(index)}
+              className={`justify-start w-full py-8 mb-4  border-2 rounded-md ${selectedChoice === answerStatus ? "bg-green-500" : "bg-red-500"}`}
+            //   onClick={() => setSelectedChoice(index)}
             >
               <div className="flex items-center justify-start">
                 <div className="p-2 px-3 mr-3 border rounded-md">
@@ -248,7 +252,7 @@ const MCQ = ({ game }: Props) => {
         })}
         <Button
           variant="default"
-          className="mt-2"
+          className="mt-2 flex justify-end items-end"
           size="lg"
           disabled={isChecking || hasEnded}
           onClick={() => {
