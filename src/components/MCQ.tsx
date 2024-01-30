@@ -227,7 +227,7 @@ const MCQ = ({ game }: Props) => {
       </Card>
       <div className="flex flex-col items-center justify-center w-full mt-4">
         {options.map((option, index) => {
-            console.log(option)
+            // console.log(option)
             // if (indent)
           return (
             <Button
