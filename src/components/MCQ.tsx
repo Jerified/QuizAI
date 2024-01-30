@@ -119,11 +119,6 @@ const MCQ = ({ game }: Props) => {
         // setTimeout(() => {
             setQuestionIndex((questionIndex) => questionIndex + 1);
             // setAnswerStatus(true)
-        //      setAnswerStatus((answerStatus) => {
-        //   const newAnswerStatus = [...answerStatus];
-        //   newAnswerStatus[questionIndex] = isCorrect? "correct" : "wrong";
-        //   return newAnswerStatus;
-        // });
             // setChoiceStatus("default");
         // }, 1000);
       },
