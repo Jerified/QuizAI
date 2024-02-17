@@ -33,7 +33,7 @@ const MCQ = ({ game }: Props) => {
   });
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
   const [now, setNow] = React.useState(new Date());
-  const [answerStatus, setAnswerStatus] = React.useState(0)  
+  const [answerStatus, setAnswerStatus] = React.useState(false)  
   const [choiceStatus, setChoiceStatus] = React.useState<string>("default")
 
   const currentQuestion = React.useMemo(() => {
@@ -85,7 +85,6 @@ const MCQ = ({ game }: Props) => {
         console.log(isCorrect)
        
         if (isCorrect) {
-            // setAnswerStatus(true)
           setStats((stats) => ({
             ...stats,
             correct_answers: stats.correct_answers + 1,
@@ -93,10 +92,9 @@ const MCQ = ({ game }: Props) => {
           toast({
             title: "Correct",
             description: "You got it right!",
-            // variant: "success",
+            variant: "success",
           });
         } else {
-        //  setAnswerStatus(isCorrect)
           setStats((stats) => ({
             ...stats,
             wrong_answers: stats.wrong_answers + 1,
@@ -191,9 +189,9 @@ const MCQ = ({ game }: Props) => {
   return (
     <div className="md:w-[80vw] max-w-4xl w-[90vw] mx-auto">
       <div className="fle justify-between items-center my-3">
-        <div className="flex flex-col">
+        <div className="flex flex-col b">
           {/* topic */}
-          <p className='flex items-center justify-center text-xl'>
+          <p className='flex items-center justify-center text-xl gap-2'>
             <span className="text-slate-400">Topic</span> &nbsp;
             <span className="px-2 py-1 text-white rounded-lg bg-slate-800">
               {game.topic}
@@ -218,9 +216,9 @@ const MCQ = ({ game }: Props) => {
         </div>
         {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
       </div>
-      <Card className="w-full mt-2 md:mt-4 bg-white text-black md:h-[15vh]">
+      <Card className="w-full mt-2 md:mt-4 dark:bg-white bg-black/80 md:h-[18vh]">
         <CardHeader className="flex flex-row items-center">
-          <CardDescription className="flex-grow text-lg">
+          <CardDescription className="flex-grow text-lg dark:text-black text-white">
             {currentQuestion?.question}
           </CardDescription>
         </CardHeader>
@@ -233,8 +231,8 @@ const MCQ = ({ game }: Props) => {
             <Button
               key={option}
               variant={selectedChoice === index ? "default" : "outline"}
-              className={`justify-start w-full py-8 mb-4  border-2 rounded-md ${selectedChoice === answerStatus ? "bg-green-500" : "bg-red-500"}`}
-            //   onClick={() => setSelectedChoice(index)}
+              className={`justify-start w-full py-6 md:py-8 mb-4  border-2 rounded-md`}
+              onClick={() => setSelectedChoice(index)}
             >
               <div className="flex items-center justify-start">
                 <div className="p-2 px-3 mr-3 border rounded-md">
@@ -247,7 +245,7 @@ const MCQ = ({ game }: Props) => {
         })}
         <Button
           variant="default"
-          className="mt-2 flex justify-end items-end"
+          className="mt-2 mb-4 py-6 flex justify-center items-center"
           size="lg"
           disabled={isChecking || hasEnded}
           onClick={() => {
