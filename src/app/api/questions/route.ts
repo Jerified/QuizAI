@@ -46,11 +46,11 @@ export async function POST(req: Request, res: Response) {
           option3: "option3 with max length of 15 words",
         }
         );
-        console.log(questions)
     }
+    console.log(questions)
     return NextResponse.json(
       {
-        questions: questions,
+          questions: questions,
       },
       {
         status: 200,
