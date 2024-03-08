@@ -4,8 +4,8 @@ import { getQuestionsSchema } from "@/schemas/questions";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-export const runtime = "nodejs";
-export const maxDuration = 10;
+// export const runtime = "nodejs";
+// export const maxDuration = 10;
 
 export async function POST(req: Request, res: Response) {
   try {
